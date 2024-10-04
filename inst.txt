@@ -1,5 +1,2 @@
-<<<<<<< HEAD
 ok-new-feature
-=======
 ok
->>>>>>> main
