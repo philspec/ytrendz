@@ -15,12 +15,6 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const app = express();
 app.use(express.json()); // Middleware to parse JSON requests
 
-export async function main() {
-  const chatCompletion = await getGroqChatCompletion();
-  // Print the completion returned by the LLM.
-  console.log(chatCompletion.choices[0]?.message?.content || "");
-}
-
 // New endpoint to handle prompt requests
 app.post('/prompt', async (req, res) => {
   const userPrompt = req.body.prompt; // Get the prompt from the request body
@@ -30,7 +24,11 @@ app.post('/prompt', async (req, res) => {
 
   try {
     const chatCompletion = await getGroqChatCompletion(userPrompt); // Pass the prompt to the function
-    res.json(chatCompletion); // Send the response back
+    // Include the prompt in the response
+    res.json({
+      prompt: userPrompt, // Include the prompt in the response
+      response: chatCompletion // Send the response back
+    });
   } catch (error) {
     res.status(500).send('Error processing request'); // Handle errors
   }
