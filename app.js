@@ -1,51 +1,45 @@
 import express from 'express'; 
 import Groq from "groq-sdk";
 import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import bodyParser from 'body-parser';
+import cors from 'cors'; // Import the CORS middleware
 
 // Load environment variables from the .env file
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config();
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
 const app = express();
-app.use(express.json()); // Middleware to parse JSON requests
 
-// New endpoint to handle prompt requests
-app.post('/prompt', async (req, res) => {
-  const userPrompt = req.body.prompt; // Get the prompt from the request body
-  if (!userPrompt) {
-    return res.status(400).send('Prompt is required'); // Handle missing prompt
+// Use CORS middleware
+app.use(cors()); // Allow all origins (you can configure this for specific origins)
+app.use(express.json()); // Middleware to parse JSON requests
+app.use(bodyParser.json());
+
+// New endpoint to handle analysis requests
+app.post('/analyze', async (req, res) => {
+  const { comments } = req.body;
+
+  if (!comments || comments.length === 0) {
+    return res.status(400).send('Comments are required for analysis.');
   }
 
   try {
-    const chatCompletion = await getGroqChatCompletion(userPrompt); // Pass the prompt to the function
-    // Include the prompt in the response
-    res.json({
-      prompt: userPrompt, // Include the prompt in the response
-      response: chatCompletion // Send the response back
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: `Analyze the following comments: ${comments.join(' ')}. Please provide insights on the sentiment and key themes present in these comments.`,
+        },
+      ],
+      model: "mixtral-8x7b-32768", // Specify the model to use
     });
+
+    res.json(chatCompletion); // Send the completion back to the client
   } catch (error) {
-    res.status(500).send('Error processing request'); // Handle errors
+    console.error("Error analyzing comments:", error);
+    res.status(500).json({ error: 'Failed to analyze comments' });
   }
 });
-
-// Modify the getGroqChatCompletion function to accept a prompt
-export async function getGroqChatCompletion(userPrompt) {
-  return groq.chat.completions.create({
-    messages: [
-      {
-        role: "user",
-        content: userPrompt, // Use the provided prompt
-      },
-    ],
-    model: "llama-3.1-70b-versatile",
-  });
-}
 
 // Start the server
 const PORT = process.env.PORT || 3000;
