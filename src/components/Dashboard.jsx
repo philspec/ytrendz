@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'; // Import useState and useEffect for state management
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import { searchYouTube } from '@/lib/youtube'; // Import the search function
-import { logout } from '@/components/AuthForms/Logout'
 import { Youtube } from 'lucide-react'
+import Header from './Header'
+
 const Dashboard = () => {
   const user = useStore((state) => state.user)
   const [searchParams, setSearchParams] = useState({}); // State to hold search parameters
@@ -69,20 +70,7 @@ const Dashboard = () => {
 
   return (
     <div className="container flex flex-col items-center justify-between min-h-screen p-4 font-sans text-gray-100 bg-gray-900">
-      <div className="flex flex-row items-center justify-between w-full">
-  {/* First div with logo and icon */}
-  <div className="flex items-center m-2">
-    <Youtube className="w-8 h-8 mx-2 mt-2 text-purple-400" />
-    <span className="text-2xl font-bold text-purple-400">ytrendz</span>
-  </div>
-
-  {/* Second div with logout button */}
-  <div className="m-2">
-    <Button className="bg-purple-600 hover:bg-purple-700" onClick={logout}>
-      Logout
-    </Button>
-  </div>
-</div>
+      <Header/>
       <SearchBar setSearchParams={setSearchParams} setAllResults={setAllResults} />
       <div>
       <VideoList videos={currentResults} onVideoClick={handleVideoClick} />

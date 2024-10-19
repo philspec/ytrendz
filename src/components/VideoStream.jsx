@@ -36,7 +36,6 @@ const VideoStream = ({ videoId }) => {
 
   return (
     <div>
-      <h2>Video Stream</h2>
       <video controls width="600">
         <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
