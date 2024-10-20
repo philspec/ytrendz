@@ -76,6 +76,7 @@ const Dashboard = () => {
       <Header/>
       <SearchBar setSearchParams={setSearchParams} setAllResults={setAllResults} />
       <div>
+      {isLoading ? <div className="flex items-center justify-center">Loading...</div> : <VideoList videos={currentResults} onVideoClick={handleVideoClick} />}
       <VideoList videos={currentResults} onVideoClick={handleVideoClick} />
       </div>
       <div className="flex justify-between mt-4 mb-4">
