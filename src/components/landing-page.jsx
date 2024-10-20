@@ -1,16 +1,28 @@
 import { useState} from 'react'
 import { useRef } from 'react'
 import { Button } from "@/components/ui/button"
+import ExportGoogleLogo from '@/components/ui/googleicon'
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Youtube, MessageCircle, FileText, Zap } from 'lucide-react'
 import SignUp from '@/components/AuthForms/SignUp'
 import SignIn from '@/components/AuthForms/SignIn'
+import { supabase } from '@/lib/supabase';
 
 function LandingPageJsx() {
   const [email, setEmail] = useState('abc@gmail.com')
   const [password, setPassword] = useState('123456')
+
+  const onGoogleSignIn = async () => {
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   const handleemailinput = (e) => {
     setEmail(e.target.value)
@@ -52,7 +64,7 @@ function LandingPageJsx() {
             </p>
           </div>
           <div className="lg:w-1/2 lg:pl-16" ref={loginFormRef}>
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="flex flex-col bg-gray-800 border-gray-700">
               <CardHeader>
                 <CardDescription className="m-auto text-gray-400">Start analyzing YouTube content today</CardDescription>
               </CardHeader>
@@ -96,6 +108,9 @@ function LandingPageJsx() {
                   </TabsContent>
                 </Tabs>
               </CardContent>
+              <Button onClick={onGoogleSignIn} className="p-2 m-auto my-2 text-center text-gray-300 bg-transparent border-2 border-gray-200 w-fit h-fit rounded-xl">
+          <ExportGoogleLogo className="w-4 h-4" /> Sign in with Google
+        </Button>
             </Card>
           </div>
         </section>
