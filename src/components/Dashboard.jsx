@@ -14,7 +14,6 @@ const Dashboard = () => {
   const [allResults, setAllResults] = useState([]); // State to hold all results across pages
   const [continuationToken, setContinuationToken] = useState(null); // State for continuation token
   const [currentPage, setCurrentPage] = useState(1); // Current page number
-  const [isLoading, setIsLoading] = useState(false); // State to track loading status
   const resultsPerPage = 10; // Number of results per page
   const navigate = useNavigate();
 
@@ -23,7 +22,6 @@ const Dashboard = () => {
   };
 
   const fetchResults = async (pageToken = null) => {
-    setIsLoading(true); // Set loading state to true
     try {
       const results = await searchYouTube(
         searchParams.query, // Use stored query parameter
@@ -37,7 +35,6 @@ const Dashboard = () => {
       );
 
       // Update the results and continuation token
-      setIsLoading(false); // Set loading state to false
       setAllResults(prevResults => [...prevResults, ...results.data]); // Append new results
       setContinuationToken(results.continuation); // Update the continuation token
     } catch (error) {
@@ -76,7 +73,6 @@ const Dashboard = () => {
       <Header/>
       <SearchBar setSearchParams={setSearchParams} setAllResults={setAllResults} />
       <div>
-      {isLoading ? <div className="flex items-center justify-center">Loading...</div> : <VideoList videos={currentResults} onVideoClick={handleVideoClick} />}
       <VideoList videos={currentResults} onVideoClick={handleVideoClick} />
       </div>
       <div className="flex justify-between mt-4 mb-4">

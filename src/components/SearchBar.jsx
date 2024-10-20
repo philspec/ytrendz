@@ -10,14 +10,16 @@ const SearchBar = ({ setSearchParams, setAllResults }) => {
   const [duration, setDuration] = useState('any'); // New state for duration
   const [lang, setLang] = useState('en'); // New state for language
   const [country, setCountry] = useState('IN'); // New state for country
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
 
   const handleSearch = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
     try {
       const results = await searchYouTube(query, null, sort, uploadDate, duration, null, lang, country);
       setSearchParams({ query, sort, uploadDate, duration, lang, country }); // Store search parameters
       setAllResults(results.data); // Set all results for pagination
-      console.log(results.data)
+      setIsLoading(false)
     } catch (error) {
       console.error('Error searching YouTube:', error)
       alert('Failed to search YouTube. Please try again.')
@@ -91,6 +93,7 @@ const SearchBar = ({ setSearchParams, setAllResults }) => {
       </select>
       
       </div>
+      {isLoading && <p className="text-xl text-purple-500">Loading...</p>}
     </form>
   )
 }
