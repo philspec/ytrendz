@@ -68,17 +68,8 @@ const Dashboard = () => {
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = allResults.slice(indexOfFirstResult, indexOfLastResult);
 
-  if (currentResults.length === 0) {
-    return (
-      <div className="container flex flex-col items-center justify-between min-h-screen p-4 font-sans text-gray-100 bg-gray-900">
-        <Header/>
-        <SearchBar setSearchParams={setSearchParams} setAllResults={setAllResults} />
-        <div className="flex justify-center">
-          <p className="text-xl text-purple-500">No results found for your search.</p>
-        </div>
-      </div>
-    );
-  }
+
+  
   return (
     <div className="container flex flex-col items-center justify-between min-h-screen p-4 font-sans text-gray-100 bg-gray-900">
       <Header/>

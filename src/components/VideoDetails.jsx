@@ -126,9 +126,8 @@ const VideoDetails = () => {
         <Button onClick={handleSummarizeTranscript} className="h-10 bg-purple-600 hover:bg-purple-700">
           Summarize Transcript
         </Button>
-        
-        {state.errors.transcript && <p className="mt-2 text-red-500">No Transcript available for this video.</p>}
       </div>
+      {state.errors.transcript && <p className="mt-2 text-red-500">No Transcript available for this video.</p>}
       </div>
       
 
