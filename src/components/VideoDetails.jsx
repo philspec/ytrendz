@@ -67,8 +67,6 @@ const VideoDetails = () => {
     navigate('/', { state: location.state });
   };
 
-  if (!state.video) return <div>Loading video details...</div>;
-
   return (
     <div className="container flex flex-col items-center justify-between min-h-screen p-4 font-sans text-gray-100 bg-gray-900">
       <Header/>
