@@ -67,6 +67,18 @@ const VideoDetails = () => {
     navigate('/', { state: location.state });
   };
 
+  if (!state.video) {
+    return (
+      <div className="container flex flex-col items-center justify-between min-h-screen p-4 font-sans text-gray-100 bg-gray-900">
+        <Header/>
+        <h1 className="mb-4 text-2xl font-bold text-center">Loading</h1>
+        <Button className="bg-purple-600 hover:bg-purple-700" onClick={handleBack}>
+          Back to Home
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="container flex flex-col items-center justify-between min-h-screen p-4 font-sans text-gray-100 bg-gray-900">
       <Header/>
